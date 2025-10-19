@@ -35,6 +35,7 @@ public:
 
     void updateTail();
     void updateHead();
+    void incrementSize();
 };
 
 

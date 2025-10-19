@@ -1,2 +1,3 @@
 - highscore
-- 
+- current score
+- powerups (time slowdonw, make snake shorter etc...)

@@ -3,9 +3,11 @@
 //
 #include "FilePrinter.h"
 
+#include <chrono>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <thread>
 
 void FilePrinter::printFile(const std::string& filePath, int height) {
     std::ifstream file(filePath);
@@ -22,6 +24,7 @@ void FilePrinter::printFile(const std::string& filePath, int height) {
     while (std::getline(file, line)) {
         std::cout << line << std::endl;
         lineN++;
+        std::this_thread::sleep_for(std::chrono::milliseconds(100)); //sleep for while
     }
 
     if (lineN < height) {

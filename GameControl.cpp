@@ -1,6 +1,7 @@
 #include "GameControl.h"
 
 #include <algorithm>
+#include <chrono>
 #include <iomanip>
 #include <iostream>
 #include <termio.h>
@@ -10,7 +11,9 @@
 
 
 GameControl::GameControl(const int width, const int height, const Snake& player)
-    : snake(player), width(width), height(height) {}
+    : snake(player), width(width), height(height), itemCollect() {
+    itemCollect.respawnItem(width, height);
+}
 
 void GameControl::cleanField() {
     std::cout << "\033[2J\033[H";
@@ -19,6 +22,35 @@ void GameControl::cleanField() {
 bool GameControl::isGameRunning() const {
     return gameRunning;
 }
+
+int GameControl::getScore() const {
+    return score;
+}
+
+std::chrono::milliseconds GameControl::calculateGameSpeed(const int difficulty) const {
+    int minDelay = 20;
+    int initDelay = 110;
+    double decrease;
+    switch (difficulty) {
+        case 1:
+            decrease = 0.01;
+            break;
+        case 2:
+            decrease = 0.02;
+            break;
+        case 3:
+            decrease = 0.04;
+            break;
+        case 4:
+            decrease = 0.1;
+            break;
+        default:
+            decrease = 0.02;
+    }
+    return std::chrono::milliseconds(std::max(static_cast<int>(initDelay * (1 - (decrease * score))), minDelay));
+}
+
+
 
 
 void GameControl::updatePlayerBounce() {
@@ -42,15 +74,22 @@ void GameControl::updateSnake() {
         gameRunning = false;
         return;
     }
+    //check or colision head with tail
+    if ((std::ranges::find(tail, std::make_pair(headX, headY)) != tail.end())) {
+        gameRunning = false;
+    }
+
+    //check item collect
+    if (headX == itemCollect.getX() && headY == itemCollect.getY()) {
+        snake.incrementSize();
+        itemCollect.respawnItem(width, height);
+        score++;
+    }
 
     //update snake positions
     snake.updateTail();
     snake.updateHead();
 
-    //check or colision head with tail
-    if ((std::ranges::find(tail, std::make_pair(headX, headY)) != tail.end())) {
-        gameRunning = false;
-    }
 
 
 
@@ -117,7 +156,12 @@ void GameControl::printField() const {
             else if (std::ranges::find(tail, std::make_pair(col, row)) != tail.end()) {
                 std::cout << "\033[32m" << snake.getBodySign() << "\033[0m";
             }
+            //print the collectable item
+            else if (itemCollect.getX() == col && itemCollect.getY() == row) {
+                std::cout << "\033[35m" << "[]" << "\033[0m";
+            }
 
+            //print the background
             else std::cout << "\033[0m░░";
         }
         // std::cout << std::setfill(' ') << std::setw(width) << "";

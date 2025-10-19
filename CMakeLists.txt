@@ -12,4 +12,6 @@ add_executable(snake_test main.cpp
         kbhit.h
         FilePrinter.cpp
         FilePrinter.h
+        CollectItem.cpp
+        CollectItem.h
 )

@@ -82,6 +82,12 @@ void Snake::updateTail() {
     }
 }
 
+void Snake::incrementSize() {
+    length++;
+    tailCoords.push_back({0, 0});
+}
+
+
 
 
 

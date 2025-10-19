@@ -5,18 +5,29 @@
 #ifndef SNAKE_TEST_GAMEFIELD_H
 #define SNAKE_TEST_GAMEFIELD_H
 
+#include <bits/chrono.h>
+
+#include "CollectItem.h"
 #include "Snake.h"
 
 
 class GameControl {
 private:
     Snake snake;
+    CollectItem itemCollect;
     int width;
     int height;
     bool gameRunning = true;
+    int score = 0;
+
+    // std::chrono::milliseconds delayMili = 110;
 public:
     GameControl(int width, int height, const Snake& player);
     bool isGameRunning() const;
+    int getScore() const;
+
+    std::chrono::milliseconds calculateGameSpeed(int difficulty) const;
+
 
     void printField() const;
     void updatePlayerBounce();
