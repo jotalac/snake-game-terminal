@@ -9,8 +9,9 @@
 
 
 int main() {
+    srand(std::time(0));
     const Snake snake(1, 1, "▓", "@", 2);
-    GameControl game_field(30, 30, snake);
+    GameControl game_field(30, 30, snake, 10);
 
     while (game_field.isGameRunning()) {
         game_field.controlSnake();

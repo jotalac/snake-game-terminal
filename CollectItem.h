@@ -4,18 +4,12 @@
 
 #ifndef SNAKE_TEST_COLLECTITEM_H
 #define SNAKE_TEST_COLLECTITEM_H
+#include "Item.h"
 
 
-class CollectItem {
-private:
-    int x = 0;
-    int y = 0;
+class CollectItem : public Item {
 public:
-    int getX() const;
-    int getY() const;
-
-    void respawnItem(int gameWidth, int gameHeight);
-
+    CollectItem(const std::string& sign);
 };
 
 

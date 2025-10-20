@@ -9,6 +9,7 @@
 
 #include "CollectItem.h"
 #include "Snake.h"
+#include "Walls.h"
 
 
 class GameControl {
@@ -20,9 +21,11 @@ private:
     bool gameRunning = true;
     int score = 0;
 
+    Walls walls;
+
     // std::chrono::milliseconds delayMili = 110;
 public:
-    GameControl(int width, int height, const Snake& player);
+    GameControl(int width, int height, const Snake& player, int numberOfWalls);
     bool isGameRunning() const;
     int getScore() const;
 

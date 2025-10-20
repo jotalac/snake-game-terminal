@@ -14,4 +14,8 @@ add_executable(snake_test main.cpp
         FilePrinter.h
         CollectItem.cpp
         CollectItem.h
+        Item.cpp
+        Item.h
+        Walls.cpp
+        Walls.h
 )

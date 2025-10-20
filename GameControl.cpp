@@ -11,9 +11,10 @@
 #include "FilePrinter.h"
 
 
-GameControl::GameControl(const int width, const int height, const Snake& player)
-    : snake(player), width(width), height(height), itemCollect() {
+GameControl::GameControl(const int width, const int height, const Snake& player, const int numberOfWalls)
+    : snake(player), itemCollect("**"), width(width), height(height), walls(numberOfWalls, "▓▓") {
     itemCollect.respawnItem(width, height);
+    walls.placeWalls(width, height);
 }
 
 void GameControl::cleanField() {
@@ -33,6 +34,9 @@ std::chrono::milliseconds GameControl::calculateGameSpeed(const int difficulty) 
     int initDelay = 110;
     double decrease;
     switch (difficulty) {
+        case 0:
+            initDelay = 400;
+            decrease = 0.001;
         case 1:
             decrease = 0.01;
             break;
@@ -69,6 +73,7 @@ void GameControl::updateSnake() {
     const int headX = snake.getHeadX();
     const int headY = snake.getHeadY();
     std::vector<std::pair<int, int>> tail = snake.getTailCoords();
+    std::vector<std::pair<int, int>> wallPositions = walls.getWallPositions();
 
     //check colision with boundary
     if (headX > width || headX < 0 || headY > height || headY < 0) {
@@ -78,22 +83,27 @@ void GameControl::updateSnake() {
     //check or colision head with tail
     if ((std::ranges::find(tail, std::make_pair(headX, headY)) != tail.end())) {
         gameRunning = false;
+        return;
     }
 
     //check item collect
     if (headX == itemCollect.getX() && headY == itemCollect.getY()) {
         snake.incrementSize();
         itemCollect.respawnItem(width, height);
+        walls.placeWalls(width, height);
         score++;
+        return;
+    }
+
+    //check collision with wall obsticle
+    if ((std::ranges::find(wallPositions, std::make_pair(headX, headY)) != wallPositions.end())) {
+        gameRunning = false;
+        return;
     }
 
     //update snake positions
     snake.updateTail();
     snake.updateHead();
-
-
-
-
 }
 
 void GameControl::controlSnake() {
@@ -142,53 +152,17 @@ void GameControl::endGame() const {
 
     std::cout << scoreText << std::endl;
 }
-// #include <fstream>
-// #include <vector>
-// void GameControl::endGame() const {
-//     cleanField();
-//     FilePrinter::printFile("../resources/game_over.txt");
-//     FilePrinter::printFile("../resources/your_score.txt");
-//
-//     std::string scoreString = std::to_string(score);
-//     std::vector<std::vector<std::string>> digitLines;
-//
-//     // Read all digit files into memory
-//     for (const auto& c : scoreString) {
-//         std::string path = std::string("../resources/") + c + ".txt";
-//         std::ifstream file(path);
-//         std::vector<std::string> lines;
-//         std::string line;
-//         while (std::getline(file, line)) {
-//             lines.push_back(line);
-//         }
-//         digitLines.push_back(lines);
-//     }
-//
-//     // Find max number of lines (all digits should have same height)
-//     size_t maxLines = 0;
-//     for (const auto& digit : digitLines) {
-//         maxLines = std::max(maxLines, digit.size());
-//     }
-//
-//     // Print line by line horizontally
-//     for (size_t lineNum = 0; lineNum < maxLines; ++lineNum) {
-//         for (const auto& digit : digitLines) {
-//             if (lineNum < digit.size()) {
-//                 std::cout << digit[lineNum];
-//             }
-//         }
-//         std::cout << std::endl;
-//     }
-// }
 
 
 void GameControl::printField() const {
     std::vector<std::pair<int, int>> tail = snake.getTailCoords();
+    std::vector<std::pair<int, int>> wallPositions = walls.getWallPositions();
+
     //print the outline
-    std::cout << std::setfill('-') << std::setw(width*2+2) << "" << std::endl;
+    std::cout << std::setfill('=') << std::setw(width*2+2) << "" << std::endl;
     //print the sides
     for (int row = 0; row < height; ++row) {
-        std::cout << "|";
+        std::cout << "║";
 
         for (int col = 0; col < width; ++col) {
             //check if to print the head
@@ -199,17 +173,22 @@ void GameControl::printField() const {
             }
             //print the collectable item
             else if (itemCollect.getX() == col && itemCollect.getY() == row) {
-                std::cout << "\033[35m" << "[]" << "\033[0m";
+                std::cout << "\033[35m" << itemCollect.getSign() << "\033[0m";
+            }
+            //print the wall obsticle
+            else if (std::ranges::find(wallPositions, std::make_pair(col, row)) != wallPositions.end()) {
+                std::cout << "\x1b[91m" << walls.getSign() << "\033[0m";
             }
 
             //print the background
-            else std::cout << "\033[0m░░";
+            // else std::cout << "\033[0m░░";
+            else std::cout << "\033[0m  ";
         }
         // std::cout << std::setfill(' ') << std::setw(width) << "";
-        std::cout << "|" << std::endl;
+        std::cout << "║" << std::endl;
     }
     //print the final line
-    std::cout << std::setfill('-') << std::setw(width*2 + 2) << "" << std::endl;
+    std::cout << std::setfill('=') << std::setw(width*2 + 2) << "" << std::endl;
     // printScore();
 
 }
