@@ -104,6 +104,7 @@ void GameControl::updateSnake() {
     //update snake positions
     snake.updateTail();
     snake.updateHead();
+    itemCollect.moveRand(width, height);
 }
 
 void GameControl::controlSnake() {

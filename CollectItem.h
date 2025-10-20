@@ -10,6 +10,7 @@
 class CollectItem : public Item {
 public:
     CollectItem(const std::string& sign);
+    void moveRand(int width, int height);
 };
 
 
