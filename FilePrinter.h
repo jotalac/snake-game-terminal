@@ -9,7 +9,7 @@
 
 class FilePrinter {
 public:
-    static void printFile(const std::string& filePath, int height);
+    static void printFile(const std::string& filePath);
 };
 
 

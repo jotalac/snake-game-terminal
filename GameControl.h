@@ -30,11 +30,13 @@ public:
 
 
     void printField() const;
+    void printScore() const;
+    void renderGame() const;
     void updatePlayerBounce();
     void updateSnake();
     static void cleanField();
     void controlSnake();
-    void endGame();
+    void endGame() const;
 };
 
 

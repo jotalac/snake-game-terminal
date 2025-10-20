@@ -9,7 +9,7 @@
 #include <iostream>
 #include <thread>
 
-void FilePrinter::printFile(const std::string& filePath, int height) {
+void FilePrinter::printFile(const std::string& filePath) {
     std::ifstream file(filePath);
 
     //check if file was opened
@@ -19,17 +19,12 @@ void FilePrinter::printFile(const std::string& filePath, int height) {
     }
 
     std::string line;
-    int lineN = 0;
 
     while (std::getline(file, line)) {
         std::cout << line << std::endl;
-        lineN++;
-        std::this_thread::sleep_for(std::chrono::milliseconds(100)); //sleep for while
+        std::this_thread::sleep_for(std::chrono::milliseconds(20)); //sleep for while
     }
 
-    if (lineN < height) {
-        std::cout << std::setfill('\n') << std::setw(height - lineN) << "" << std::endl;
-    }
 
     file.close();
 }

@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <iostream>
 #include <termio.h>
+// #include <bits/fs_path.h>
 
 #include "kbhit.h"
 #include "FilePrinter.h"
@@ -132,16 +133,56 @@ void GameControl::controlSnake() {
     }
 }
 
-void GameControl::endGame() {
+void GameControl::endGame() const {
     cleanField();
-    FilePrinter::printFile("../resources/game_over.txt", height);
-}
+    FilePrinter::printFile("../resources/game_over.txt");
 
+    //print the numbers of score
+    std::string scoreText = std::string("===============") + " Your score: " + std::to_string(score) + " ===============";
+
+    std::cout << scoreText << std::endl;
+}
+// #include <fstream>
+// #include <vector>
+// void GameControl::endGame() const {
+//     cleanField();
+//     FilePrinter::printFile("../resources/game_over.txt");
+//     FilePrinter::printFile("../resources/your_score.txt");
+//
+//     std::string scoreString = std::to_string(score);
+//     std::vector<std::vector<std::string>> digitLines;
+//
+//     // Read all digit files into memory
+//     for (const auto& c : scoreString) {
+//         std::string path = std::string("../resources/") + c + ".txt";
+//         std::ifstream file(path);
+//         std::vector<std::string> lines;
+//         std::string line;
+//         while (std::getline(file, line)) {
+//             lines.push_back(line);
+//         }
+//         digitLines.push_back(lines);
+//     }
+//
+//     // Find max number of lines (all digits should have same height)
+//     size_t maxLines = 0;
+//     for (const auto& digit : digitLines) {
+//         maxLines = std::max(maxLines, digit.size());
+//     }
+//
+//     // Print line by line horizontally
+//     for (size_t lineNum = 0; lineNum < maxLines; ++lineNum) {
+//         for (const auto& digit : digitLines) {
+//             if (lineNum < digit.size()) {
+//                 std::cout << digit[lineNum];
+//             }
+//         }
+//         std::cout << std::endl;
+//     }
+// }
 
 
 void GameControl::printField() const {
-    cleanField();
-
     std::vector<std::pair<int, int>> tail = snake.getTailCoords();
     //print the outline
     std::cout << std::setfill('-') << std::setw(width*2+2) << "" << std::endl;
@@ -169,4 +210,23 @@ void GameControl::printField() const {
     }
     //print the final line
     std::cout << std::setfill('-') << std::setw(width*2 + 2) << "" << std::endl;
+    // printScore();
+
+}
+
+void GameControl::printScore() const {
+
+    std::string text = " Your score: " + std::to_string(score) + " ";
+    std::string padding = std::string(width - text.length() / 2, ' ');
+
+    std::cout << std::setfill('=') << std::setw(width*2+2) << "" << std::endl;
+    std::cout << "\033[1;31m" << padding << text << padding << "\033[0m" << std::endl;
+    std::cout << std::setfill('=') << std::setw(width*2+2) << "" << std::endl;
+    // std::cout << (width - text.length());
+}
+
+void GameControl::renderGame() const {
+    cleanField();
+    printField();
+    printScore();
 }
