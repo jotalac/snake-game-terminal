@@ -14,7 +14,7 @@
 GameControl::GameControl(const int width, const int height, const Snake& player, const int numberOfWalls)
     : snake(player), itemCollect("**"), width(width), height(height), walls(numberOfWalls, "▓▓") {
     itemCollect.respawnItem(width, height);
-    walls.placeWalls(width, height);
+    walls.placeWalls(width, height, player.getHeadX(), player.getHeadY());
 }
 
 void GameControl::cleanField() {
@@ -90,7 +90,7 @@ void GameControl::updateSnake() {
     if (headX == itemCollect.getX() && headY == itemCollect.getY()) {
         snake.incrementSize();
         itemCollect.respawnItem(width, height);
-        walls.placeWalls(width, height);
+        walls.placeWalls(width, height, headX, headY);
         score++;
         return;
     }
@@ -104,7 +104,7 @@ void GameControl::updateSnake() {
     //update snake positions
     snake.updateTail();
     snake.updateHead();
-    itemCollect.moveRand(width, height);
+    // itemCollect.moveRand(width, height); //move collect item to some random posiston
 }
 
 void GameControl::controlSnake() {

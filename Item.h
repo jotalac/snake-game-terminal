@@ -16,6 +16,8 @@ public:
     Item(const std::string &sign);
     int getX() const;
     int getY() const;
+    void setX(int newX);
+    void setY(int newY);
     std::string getSign() const;
 
     void respawnItem(int gameWidth, int gameHeight);

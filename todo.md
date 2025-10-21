@@ -1,3 +1,4 @@
 - highscore
-- current score
+- ~~current score~~
 - powerups (time slowdonw, make snake shorter etc...)
+- minimum game size - 5x5 - for smaller the walls place would be in infinite loop (it tries to place it far from snake)

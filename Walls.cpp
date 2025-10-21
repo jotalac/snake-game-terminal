@@ -12,9 +12,16 @@ Walls::Walls(const int numberOfWalls, const std::string &sign): sign(sign) {
     }
 }
 
-void Walls::placeWalls(const int gameWidth, const int gameHeight) {
+//
+// void Walls::placeSingleWall(int gameWidth, int gameHeight, int snakeX, int snakeY) {
+// }
+
+
+void Walls::placeWalls(const int gameWidth, const int gameHeight, const int snakeX, const int snakeY) {
     for (Item& item : wallItems) {
-        item.respawnItem(gameWidth, gameHeight);
+        do {
+            item.respawnItem(gameWidth, gameHeight);
+        } while (abs(item.getX() - snakeX) < 3 && abs(item.getY() - snakeY) < 3);
     }
 }
 

@@ -17,6 +17,16 @@ int Item::getY() const {
     return y;
 }
 
+void Item::setX(const int newX) {
+    x = newX;
+}
+
+void Item::setY(const int newY) {
+    y = newY;
+}
+
+
+
 std::string Item::getSign() const {
     return sign;
 }
