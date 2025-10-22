@@ -84,7 +84,8 @@ void Snake::updateTail() {
 
 void Snake::incrementSize() {
     length++;
-    tailCoords.push_back({0, 0});
+    // std::pair<int, int> last_part =
+    tailCoords.push_back({tailCoords[tailCoords.size() - 1].first, tailCoords[tailCoords.size() - 1].second});
 }
 
 

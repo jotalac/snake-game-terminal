@@ -1,21 +1,22 @@
 cmake_minimum_required(VERSION 4.0)
-project(snake_test)
+project(snejks)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(snake_test main.cpp
-        Snake.cpp
-        Snake.h
+add_executable(snejks main.cpp
+        entities/Snake.cpp
+        entities/Snake.h
         GameControl.cpp
         GameControl.h
-        kbhit.cpp
-        kbhit.h
-        FilePrinter.cpp
-        FilePrinter.h
-        CollectItem.cpp
-        CollectItem.h
-        Item.cpp
-        Item.h
-        Walls.cpp
-        Walls.h
+        utils/kbhit.cpp
+        utils/kbhit.h
+        utils/FilePrinter.cpp
+        utils/FilePrinter.h
+        entities/CollectItem.cpp
+        entities/CollectItem.h
+        entities/Item.cpp
+        entities/Item.h
+        entities/Walls.cpp
+        entities/Walls.h
+        GameMenu.h
 )

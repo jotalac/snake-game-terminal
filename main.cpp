@@ -3,15 +3,21 @@
 #include <chrono>
 
 #include "GameControl.h"
-#include "Snake.h"
+#include "GameMenu.h"
+#include "entities/Snake.h"
 
 
 
 
 int main() {
+    //set the random seed
     srand(std::time(0));
-    const Snake snake(1, 1, "▓", "@", 2);
-    GameControl game_field(30, 30, snake, 20);
+
+    GameMenu game_menu();
+
+    const Snake snake{1, 1, "▓", "@", 2};
+    GameControl game_field{30, 30, snake, 10};
+
 
     while (game_field.isGameRunning()) {
         game_field.controlSnake();

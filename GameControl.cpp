@@ -7,8 +7,8 @@
 #include <termio.h>
 // #include <bits/fs_path.h>
 
-#include "kbhit.h"
-#include "FilePrinter.h"
+#include "utils/FilePrinter.h"
+#include "utils/kbhit.h"
 
 
 GameControl::GameControl(const int width, const int height, const Snake& player, const int numberOfWalls)

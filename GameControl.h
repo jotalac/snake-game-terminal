@@ -7,9 +7,9 @@
 
 #include <bits/chrono.h>
 
-#include "CollectItem.h"
-#include "Snake.h"
-#include "Walls.h"
+#include "entities/CollectItem.h"
+#include "entities/Snake.h"
+#include "entities/Walls.h"
 
 
 class GameControl {
