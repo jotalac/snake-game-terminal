@@ -9,6 +9,10 @@
 #include <iostream>
 #include <thread>
 
+void FilePrinter::clearField() {
+    std::cout << "\033[2J\033[H";
+}
+
 void FilePrinter::printFile(const std::string& filePath) {
     std::ifstream file(filePath);
 
@@ -24,7 +28,5 @@ void FilePrinter::printFile(const std::string& filePath) {
         std::cout << line << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(20)); //sleep for while
     }
-
-
     file.close();
 }

@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(snejks main.cpp
         entities/Snake.cpp
         entities/Snake.h
-        GameControl.cpp
-        GameControl.h
+        game/Game.cpp
+        game/Game.h
         utils/kbhit.cpp
         utils/kbhit.h
         utils/FilePrinter.cpp
@@ -18,5 +18,6 @@ add_executable(snejks main.cpp
         entities/Item.h
         entities/Walls.cpp
         entities/Walls.h
-        GameMenu.h
+        game/GameMenu.h
+        game/GameMenu.cpp
 )

@@ -4,16 +4,18 @@
 
 #ifndef SNEJKS_GAMEMENU_H
 #define SNEJKS_GAMEMENU_H
-#include "GameControl.h"
+#include "Game.h"
 
 
 class GameMenu {
 private:
-    GameControl game_control;
+    std::unique_ptr<Game> game;
 public:
-    GameMenu(GameControl game_control);
+    GameMenu();
+    // void startNewGame();
 
-    void startGame();
+    bool showMenu();
+    void gameStartup();
 };
 
 

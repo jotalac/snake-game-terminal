@@ -10,6 +10,7 @@
 class FilePrinter {
 public:
     static void printFile(const std::string& filePath);
+    static void clearField();
 };
 
 

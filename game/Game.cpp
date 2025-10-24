@@ -1,4 +1,3 @@
-#include "GameControl.h"
 
 #include <algorithm>
 #include <chrono>
@@ -7,29 +6,87 @@
 #include <termio.h>
 // #include <bits/fs_path.h>
 
-#include "utils/FilePrinter.h"
-#include "utils/kbhit.h"
+#include "Game.h"
+#include "../utils/FilePrinter.h"
+// #include "../utils/kbhit.h"
 
 
-GameControl::GameControl(const int width, const int height, const Snake& player, const int numberOfWalls)
+Game::Game(const int width, const int height, const Snake& player, const int numberOfWalls)
     : snake(player), itemCollect("**"), width(width), height(height), walls(numberOfWalls, "▓▓") {
     itemCollect.respawnItem(width, height);
     walls.placeWalls(width, height, player.getHeadX(), player.getHeadY());
 }
 
-void GameControl::cleanField() {
-    std::cout << "\033[2J\033[H";
+Game::~Game() {
+    stopGame();
 }
 
-bool GameControl::isGameRunning() const {
+void Game::startGame() {
+    gameRunning = true;
+    //enable raw mode
+    system("stty cbreak -echo");
+
+    inputThread = std::thread(&Game::inputLoop, this);
+    computeThread = std::thread(&Game::computeLoop, this);
+    renderThread = std::thread(&Game::renderLoop, this);
+}
+
+void Game::stopGame() {
+    gameRunning = false;
+    cvar.notify_all();
+
+    if (inputThread.joinable()) inputThread.join();
+    if (computeThread.joinable()) computeThread.join();
+    if (renderThread.joinable()) renderThread.join();
+
+    endScreen();
+    system("stty -cbreak echo");
+}
+
+void Game::inputLoop() {
+    while (gameRunning) {
+        //get the input char
+        const int inputChar = getchar();
+
+        // lock the mutex, if it is locked by another method, this thread will wait until it is unlocked before further method execution
+        if (inputChar != EOF) {
+            std::unique_lock<std::mutex> lock(mutex);
+            inputHandle(static_cast<char>(inputChar));
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}
+
+void Game::computeLoop() {
+    while (gameRunning) {
+        {
+            std::unique_lock<std::mutex> lock(mutex);
+            updateSnake();
+        }
+        cvar.notify_one();
+        std::this_thread::sleep_for(calculateGameSpeed());
+    }
+}
+
+void Game::renderLoop() {
+    while (gameRunning) {
+        std::unique_lock<std::mutex> lock(mutex);
+        cvar.wait(lock);
+
+        if (gameRunning) renderGame();
+    }
+}
+
+bool Game::isGameRunning() const {
     return gameRunning;
 }
 
-int GameControl::getScore() const {
+int Game::getScore() const {
     return score;
 }
 
-std::chrono::milliseconds GameControl::calculateGameSpeed(const int difficulty) const {
+std::chrono::milliseconds Game::calculateGameSpeed() const {
     int minDelay = 20;
     int initDelay = 110;
     double decrease;
@@ -37,6 +94,7 @@ std::chrono::milliseconds GameControl::calculateGameSpeed(const int difficulty) 
         case 0:
             initDelay = 400;
             decrease = 0.001;
+            break;
         case 1:
             decrease = 0.01;
             break;
@@ -51,25 +109,16 @@ std::chrono::milliseconds GameControl::calculateGameSpeed(const int difficulty) 
             break;
         default:
             decrease = 0.02;
+            break;
     }
     return std::chrono::milliseconds(std::max(static_cast<int>(initDelay * (1 - (decrease * score))), minDelay));
 }
 
+void setGameOver() {
 
-
-
-void GameControl::updatePlayerBounce() {
-    //update player position
-    const int playerX = snake.getHeadX();
-    const int playerY = snake.getHeadY();
-
-    snake.setXVec(playerX >= width || playerX <= 0 ? snake.getXVec() * -1 : snake.getXVec());
-    snake.setYVec(playerY >= height || playerY <= 0 ? snake.getYVec() * -1 : snake.getYVec());
-
-    snake.moveTo(playerX + snake.getXVec(), playerY + snake.getYVec());
 }
 
-void GameControl::updateSnake() {
+void Game::updateSnake() {
     const int headX = snake.getHeadX();
     const int headY = snake.getHeadY();
     std::vector<std::pair<int, int>> tail = snake.getTailCoords();
@@ -107,45 +156,48 @@ void GameControl::updateSnake() {
     // itemCollect.moveRand(width, height); //move collect item to some random posiston
 }
 
-void GameControl::controlSnake() {
-    if (kbhit()) {
-        switch (getchar()) {
-            case 'w':
-                if (snake.getDirection() != "DOWN") {
-                    snake.setDirection("UP");
-                    snake.setXVec(0);
-                    snake.setYVec(-1);
-                }
-                break;
-            case 'a':
-                if (snake.getDirection() != "RIGHT") {
-                    snake.setDirection("LEFT");
-                    snake.setXVec(-1);
-                    snake.setYVec(0);
-                }
-                break;
-            case 's':
-                if (snake.getDirection() != "UP") {
-                    snake.setDirection("DOWN");
-                    snake.setXVec(0);
-                    snake.setYVec(1);
-                }
-                break;
-            case 'd':
-                if (snake.getDirection() != "LEFT") {
-                    snake.setDirection("RIGHT");
-                    snake.setXVec(1);
-                    snake.setYVec(0);
-                }
-                break;
-            default:
-                break;
-        }
+void Game::inputHandle(char const intputChar) {
+    switch (intputChar) {
+        case 'w':
+            if (snake.getDirection() != "DOWN") {
+                snake.setDirection("UP");
+                snake.setXVec(0);
+                snake.setYVec(-1);
+            }
+            break;
+        case 'a':
+            if (snake.getDirection() != "RIGHT") {
+                snake.setDirection("LEFT");
+                snake.setXVec(-1);
+                snake.setYVec(0);
+            }
+            break;
+        case 's':
+            if (snake.getDirection() != "UP") {
+                snake.setDirection("DOWN");
+                snake.setXVec(0);
+                snake.setYVec(1);
+            }
+            break;
+        case 'd':
+            if (snake.getDirection() != "LEFT") {
+                snake.setDirection("RIGHT");
+                snake.setXVec(1);
+                snake.setYVec(0);
+            }
+            break;
+        case 't':
+            gameRunning = false;
+            break;
+        default:
+            break;
     }
 }
 
-void GameControl::endGame() const {
-    cleanField();
+
+
+void Game::endScreen() const {
+    FilePrinter::clearField();
     FilePrinter::printFile("../resources/game_over.txt");
 
     //print the numbers of score
@@ -155,7 +207,7 @@ void GameControl::endGame() const {
 }
 
 
-void GameControl::printField() const {
+void Game::printField() const {
     std::vector<std::pair<int, int>> tail = snake.getTailCoords();
     std::vector<std::pair<int, int>> wallPositions = walls.getWallPositions();
 
@@ -194,7 +246,7 @@ void GameControl::printField() const {
 
 }
 
-void GameControl::printScore() const {
+void Game::printScore() const {
 
     std::string text = " Your score: " + std::to_string(score) + " ";
     std::string padding = std::string(width - text.length() / 2, ' ');
@@ -205,8 +257,8 @@ void GameControl::printScore() const {
     // std::cout << (width - text.length());
 }
 
-void GameControl::renderGame() const {
-    cleanField();
+void Game::renderGame() const {
+    FilePrinter::clearField();
     printField();
     printScore();
 }
