@@ -15,7 +15,8 @@ public:
     // void startNewGame();
 
     bool showMenu();
-    void gameStartup();
+    void gameLoop();
+    void startGame();
 };
 
 

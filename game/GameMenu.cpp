@@ -9,16 +9,24 @@
 #include "../utils/FilePrinter.h"
 
 GameMenu::GameMenu() {
-    const Snake snake{1, 1, "▓", "@", 2};
-    game = std::make_unique<Game>(30, 30, snake, 10);
 }
 
-void GameMenu::gameStartup() {
+void GameMenu::gameLoop() {
     while (true) {
         if (!showMenu()) break;
     }
 }
 
+void GameMenu::startGame() {
+    const Snake snake{1, 1, "▓", "@", 2};
+    game = std::make_unique<Game>(30, 30, snake, 10);
+
+    game->startGame();
+
+    while (game->isGameRunning()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+    }
+}
 
 
 bool GameMenu::showMenu() {
@@ -30,10 +38,7 @@ bool GameMenu::showMenu() {
 
     switch (action) {
         case 1:
-            game->startGame();
-            while (game->isGameRunning()) {
-                std::this_thread::sleep_for(std::chrono::milliseconds(300));
-            }
+            startGame();
             return true;
         case 3:
             return false;
