@@ -26,6 +26,8 @@ void GameMenu::startGame() {
     while (game->isGameRunning()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(300));
     }
+
+    game.reset();
 }
 
 
