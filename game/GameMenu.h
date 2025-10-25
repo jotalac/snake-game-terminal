@@ -24,7 +24,7 @@ public:
     void gameLoop();
     void startGame() const;
 
-    void changeGameSize(int &side);
+    void changeGameSize(int &side, const std::string &sideName);
 
     //getters and setters
     int game_width() const {

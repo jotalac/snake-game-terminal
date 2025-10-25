@@ -80,9 +80,13 @@ void GameMenu::showSettings() {
         std::cin >> action;
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear buffer
 
-        if (action == "3") {
+        if (action == "1") {
+            changeGameSize(gameWidth, "width");
+        } else if (action == "2") {
+            changeGameSize(gameHeight, "height");
+        }
+        else if (action == "3") {
             gameDifficulty = ++gameDifficulty % difficultiesMap.size();
-
         } else if (action == "4") {
           gameWalls = !gameWalls;
         } else if (action == "5") {
@@ -92,8 +96,25 @@ void GameMenu::showSettings() {
     }
 }
 
-void GameMenu::changeGameSize(int &side) {
+void GameMenu::changeGameSize(int &side, const std::string &sideName) {
     while (true) {
+        FilePrinter::clearField();
+        std::cout << "Enter " << sideName << ": ";
+
+        std::string action;
+        std::cin >> action;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear buffer
+
+        try {
+            const int actionNum = std::stoi(action);
+
+            if (actionNum < 3) side = 3;
+            else if (actionNum > 100) side = 100;
+            else side = actionNum;
+            return;
+        } catch (std::invalid_argument e) {
+
+        }
 
     }
 }

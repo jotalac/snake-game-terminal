@@ -16,12 +16,14 @@ Game::Game(const Snake& player, const bool showWalls, const int width, const int
     itemCollect("**"),
     width(width),
     height(height),
-    walls(calculateWallNumber(showWalls), "▓▓"),
+    walls(0, "▓▓"),
     difficulty(difficulty)
-    {
+{
+    const int wallCount = calculateWallNumber(showWalls);
+    walls = Walls(wallCount, "▓▓");
+
     itemCollect.respawnItem(width, height);
     walls.placeWalls(width, height, player.getHeadX(), player.getHeadY());
-
 }
 
 
@@ -132,15 +134,22 @@ std::chrono::milliseconds Game::calculateGameSpeed() const {
 int Game::calculateWallNumber(const bool showWalls) const  {
     if (!showWalls) return 0;
 
+    // Calculate based on area, but with a reasonable cap
+    const int area = width * height;
+    int wallCount;
+
     switch (difficulty) {
-        case 0: return 5;
-        case 1: return 7;
-        case 2: return 10;
-        case 3: return 13;
-        case 4: return 15;
-        case 5: return 18;
-        default: return 10;
+        case 0: wallCount = area / 200; break;  // 5% of area
+        case 1: wallCount = area / 150; break;  // ~6.7%
+        case 2: wallCount = area / 100; break;  // ~8.3%
+        case 3: wallCount = area / 90; break;  // 10%
+        case 4: wallCount = area / 80; break;   // 12.5%
+        case 5: wallCount = area / 70; break;   // ~16.7%
+        default: wallCount = 10; break;
     }
+
+    // Cap at reasonable max (don't fill more than 20% of field)
+    return std::min(wallCount, area / 5);
 }
 
 
