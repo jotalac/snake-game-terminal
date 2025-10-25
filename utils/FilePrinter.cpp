@@ -13,7 +13,7 @@ void FilePrinter::clearField() {
     std::cout << "\033[2J\033[H";
 }
 
-void FilePrinter::printFile(const std::string& filePath) {
+void FilePrinter::printFile(const std::string& filePath, bool shouldAnimate) {
     std::ifstream file(filePath);
 
     //check if file was opened
@@ -26,7 +26,8 @@ void FilePrinter::printFile(const std::string& filePath) {
 
     while (std::getline(file, line)) {
         std::cout << line << std::endl;
-        std::this_thread::sleep_for(std::chrono::milliseconds(20)); //sleep for while
+
+        if (shouldAnimate) std::this_thread::sleep_for(std::chrono::milliseconds(50)); //sleep for while
     }
     file.close();
 }

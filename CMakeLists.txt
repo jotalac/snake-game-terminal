@@ -20,4 +20,5 @@ add_executable(snejks main.cpp
         entities/Walls.h
         game/GameMenu.h
         game/GameMenu.cpp
+        utils/constants.h
 )

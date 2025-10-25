@@ -39,8 +39,8 @@ void Game::stopGame() {
     if (computeThread.joinable()) computeThread.join();
     if (renderThread.joinable()) renderThread.join();
 
-    endScreen();
     system("stty -cbreak echo");
+    endScreen();
 }
 
 void Game::inputLoop() {
@@ -198,12 +198,18 @@ void Game::inputHandle(char const intputChar) {
 
 void Game::endScreen() const {
     FilePrinter::clearField();
-    FilePrinter::printFile("../resources/game_over.txt");
+    FilePrinter::printFile("../resources/game_over.txt", true);
 
     //print the numbers of score
     std::string scoreText = std::string("===============") + " Your score: " + std::to_string(score) + " ===============";
 
     std::cout << scoreText << std::endl;
+
+    // Wait longer and require user input
+    std::cout << "\nPress Enter to continue..." << std::endl;
+    // std::cin.get();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
 }
 
 

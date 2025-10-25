@@ -9,9 +9,8 @@
 
 class FilePrinter {
 public:
-    static void printFile(const std::string& filePath);
+    static void printFile(const std::string& filePath, bool shouldAnimate = false);
     static void clearField();
+
 };
-
-
 #endif //SNAKE_TEST_PRINTER_H
