@@ -20,10 +20,10 @@ void GameMenu::gameLoop() {
     }
 }
 
-void GameMenu::startGame() {
+void GameMenu::startGame() const {
     const Snake snake{1, 1, "▓", "@", 2};
     // game = std::make_unique<Game>(30, 30, snake, 10);
-    Game game{30, 30, snake, 10};
+    Game game{snake, gameWalls, gameWidth, gameHeight, gameDifficulty};
 
     game.startGame();
 
@@ -63,18 +63,41 @@ bool GameMenu::showMenu() {
 }
 
 void GameMenu::showSettings() {
-    FilePrinter::clearField();
-    FilePrinter::printFile("../resources/settings_title.txt");
+    while (true) {
+        FilePrinter::clearField();
+        FilePrinter::printFile("../resources/settings_title.txt");
 
-    const auto startSpace = std::string(10, ' ');
-    std::cout << startSpace << purple << "Press the number to change the value:" << std::endl << std::endl;
-    std::cout << white << startSpace << "1) game width: " << game_width() << std::endl;
-    std::cout << white << startSpace << "2) game height: " << game_height() << std::endl;
-    std::cout << white << startSpace << "2) difficultly: " << game_difficulty() << std::endl;
-    std::cout << red << startSpace << "3) spawn obstacles: " << game_walls() << resetStyle << std::endl;
+        const auto startSpace = std::string(4, ' ');
+        std::cout << std::boolalpha;
+        std::cout << startSpace << green << "Press the number to change the value:" << std::endl << std::endl;
+        std::cout << white << startSpace << "1) game width: " << green << gameWidth << std::endl;
+        std::cout << white << startSpace << "2) game height: " << green << gameHeight << std::endl;
+        std::cout << white << startSpace << "3) difficultly: " << green << difficultiesMap[gameDifficulty] << std::endl;
+        std::cout << white << startSpace << "4) spawn walls: " << green << gameWalls << std::endl << std::endl;
+        std::cout << red << startSpace << "5) exit settings" << resetStyle << std::endl;
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(10000));
+        std::string action;
+        std::cin >> action;
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear buffer
+
+        if (action == "3") {
+            gameDifficulty = ++gameDifficulty % difficultiesMap.size();
+
+        } else if (action == "4") {
+          gameWalls = !gameWalls;
+        } else if (action == "5") {
+            break;
+        }
+
+    }
 }
+
+void GameMenu::changeGameSize(int &side) {
+    while (true) {
+
+    }
+}
+
 
 
 

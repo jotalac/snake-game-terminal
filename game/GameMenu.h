@@ -22,7 +22,9 @@ public:
     bool showMenu();
     void showSettings();
     void gameLoop();
-    void startGame();
+    void startGame() const;
+
+    void changeGameSize(int &side);
 
     //getters and setters
     int game_width() const {
@@ -53,7 +55,7 @@ public:
         return gameWalls;
     }
 
-    void set_game_walls(bool game_walls) {
+    void set_game_walls(const bool game_walls) {
         gameWalls = game_walls;
     }
 };

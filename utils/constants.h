@@ -3,6 +3,7 @@
 //
 #ifndef SNEJKS_CONSTANTS_H
 #define SNEJKS_CONSTANTS_H
+#include <map>
 #include <string>
 
 const std::string black = "\e[0;30m";
@@ -15,6 +16,15 @@ const std::string cyan = "\e[0;36m";
 const std::string white = "\e[0;37m";
 const std::string titleStyle = "\e[4;32m";
 const std::string resetStyle = "\e[0m";
+
+std::map<int, std::string> difficultiesMap = {
+    {0, "Noob"},
+    {1, "Easy"},
+    {2, "Normal"},
+    {3, "Hard"},
+    {4, "Veryl hard"},
+    {5, "God mode"},
+};
 
 
 #endif //SNEJKS_CONSTANTS_H

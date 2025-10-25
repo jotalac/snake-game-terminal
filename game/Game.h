@@ -23,7 +23,9 @@ private:
     bool gameRunning = false;
     int score = 0;
     Walls walls;
-    int difficulty = 2;
+    int difficulty;
+
+
 
     //threads
     std::thread computeThread;
@@ -34,12 +36,16 @@ private:
 
     // std::chrono::milliseconds delayMili = 110;
 public:
-    Game(int width, int height, const Snake& player, int numberOfWalls);
+    Game(const Snake& player, bool showWalls = true, int width = 25, int height = 25, int difficulty = 4);
+
+    Game(int width, int height, const Snake &player, int numberOfWalls);
+
     ~Game();
     bool isGameRunning() const;
     int getScore() const;
 
     std::chrono::milliseconds calculateGameSpeed() const;
+    int calculateWallNumber(bool showWalls) const;
 
     void startGame();
     void stopGame();

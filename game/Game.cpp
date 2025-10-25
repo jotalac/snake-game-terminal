@@ -11,11 +11,19 @@
 // #include "../utils/kbhit.h"
 
 
-Game::Game(const int width, const int height, const Snake& player, const int numberOfWalls)
-    : snake(player), itemCollect("**"), width(width), height(height), walls(numberOfWalls, "▓▓") {
+Game::Game(const Snake& player, const bool showWalls, const int width, const int height, const int difficulty)
+    : snake(player),
+    itemCollect("**"),
+    width(width),
+    height(height),
+    walls(calculateWallNumber(showWalls), "▓▓"),
+    difficulty(difficulty)
+    {
     itemCollect.respawnItem(width, height);
     walls.placeWalls(width, height, player.getHeadX(), player.getHeadY());
+
 }
+
 
 Game::~Game() {
     stopGame();
@@ -88,7 +96,7 @@ int Game::getScore() const {
 
 std::chrono::milliseconds Game::calculateGameSpeed() const {
     int minDelay = 20;
-    int initDelay = 110;
+    int initDelay = 120;
     double decrease;
     switch (difficulty) {
         case 0:
@@ -96,16 +104,23 @@ std::chrono::milliseconds Game::calculateGameSpeed() const {
             decrease = 0.001;
             break;
         case 1:
-            decrease = 0.01;
+            initDelay = 130;
+            decrease = 0.005;
             break;
         case 2:
-            decrease = 0.02;
+            decrease = 0.013;
             break;
         case 3:
-            decrease = 0.04;
+            initDelay = 110;
+            decrease = 0.02;
             break;
         case 4:
-            decrease = 0.1;
+            initDelay = 100;
+            decrease = 0.07;
+            break;
+        case 5:
+            initDelay = 60;
+            decrease = 0.15;
             break;
         default:
             decrease = 0.02;
@@ -114,9 +129,20 @@ std::chrono::milliseconds Game::calculateGameSpeed() const {
     return std::chrono::milliseconds(std::max(static_cast<int>(initDelay * (1 - (decrease * score))), minDelay));
 }
 
-void setGameOver() {
+int Game::calculateWallNumber(const bool showWalls) const  {
+    if (!showWalls) return 0;
 
+    switch (difficulty) {
+        case 0: return 5;
+        case 1: return 7;
+        case 2: return 10;
+        case 3: return 13;
+        case 4: return 15;
+        case 5: return 18;
+        default: return 10;
+    }
 }
+
 
 void Game::updateSnake() {
     const int headX = snake.getHeadX();
@@ -201,7 +227,7 @@ void Game::endScreen() const {
     FilePrinter::printFile("../resources/game_over.txt", true);
 
     //print the numbers of score
-    std::string scoreText = std::string("===============") + " Your score: " + std::to_string(score) + " ===============";
+    std::string scoreText = std::string("=======") + " Your score: " + std::to_string(score) + " =======";
 
     std::cout << scoreText << std::endl;
 
