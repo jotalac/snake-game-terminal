@@ -12,6 +12,8 @@
 #include "../utils/FilePrinter.h"
 
 void GameMenu::gameLoop() {
+    srand(std::time(0));
+
     bool running = true;
     while (running) {
         running = showMenu();

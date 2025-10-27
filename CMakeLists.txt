@@ -8,8 +8,6 @@ add_executable(snejks main.cpp
         entities/Snake.h
         game/Game.cpp
         game/Game.h
-        utils/kbhit.cpp
-        utils/kbhit.h
         utils/FilePrinter.cpp
         utils/FilePrinter.h
         entities/CollectItem.cpp

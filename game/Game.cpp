@@ -3,14 +3,8 @@
 #include <chrono>
 #include <iomanip>
 #include <iostream>
-#include <termio.h>
-// #include <bits/fs_path.h>
-
 #include "Game.h"
-
-#include "../utils/constants.h"
 #include "../utils/FilePrinter.h"
-// #include "../utils/kbhit.h"
 
 
 Game::Game(const Snake& player, const bool showWalls, const int width, const int height, const int difficulty)
