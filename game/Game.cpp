@@ -7,6 +7,8 @@
 // #include <bits/fs_path.h>
 
 #include "Game.h"
+
+#include "../utils/constants.h"
 #include "../utils/FilePrinter.h"
 // #include "../utils/kbhit.h"
 
@@ -33,8 +35,6 @@ Game::~Game() {
 
 void Game::startGame() {
     gameRunning = true;
-    //enable raw mode
-    system("stty cbreak -echo");
 
     inputThread = std::thread(&Game::inputLoop, this);
     computeThread = std::thread(&Game::computeLoop, this);
@@ -43,13 +43,13 @@ void Game::startGame() {
 
 void Game::stopGame() {
     gameRunning = false;
+
     cvar.notify_all();
 
     if (inputThread.joinable()) inputThread.join();
     if (computeThread.joinable()) computeThread.join();
     if (renderThread.joinable()) renderThread.join();
 
-    system("stty -cbreak echo");
     endScreen();
 }
 
@@ -161,12 +161,12 @@ void Game::updateSnake() {
 
     //check colision with boundary
     if (headX > width || headX < 0 || headY > height || headY < 0) {
-        gameRunning = false;
+        setGameEnd();
         return;
     }
     //check or colision head with tail
     if ((std::ranges::find(tail, std::make_pair(headX, headY)) != tail.end())) {
-        gameRunning = false;
+        setGameEnd();
         return;
     }
 
@@ -181,7 +181,7 @@ void Game::updateSnake() {
 
     //check collision with wall obsticle
     if ((std::ranges::find(wallPositions, std::make_pair(headX, headY)) != wallPositions.end())) {
-        gameRunning = false;
+        setGameEnd();
         return;
     }
 
@@ -189,6 +189,11 @@ void Game::updateSnake() {
     snake.updateTail();
     snake.updateHead();
     // itemCollect.moveRand(width, height); //move collect item to some random posiston
+}
+
+void Game::setGameEnd() {
+    gameRunning = false;
+    std::cout << "--- You died, press any key to continue... ---" << std::endl;
 }
 
 void Game::inputHandle(char const intputChar) {
@@ -288,14 +293,15 @@ void Game::printField() const {
 }
 
 void Game::printScore() const {
-
     std::string text = " Your score: " + std::to_string(score) + " ";
-    std::string padding = std::string(width - text.length() / 2, ' ');
+
+    // Ensure padding is never negative
+    const int paddingSize = std::max(0, width - static_cast<int>(text.length() / 2));
+    const auto padding = std::string(paddingSize, ' ');
 
     std::cout << std::setfill('=') << std::setw(width*2+2) << "" << std::endl;
     std::cout << "\033[1;31m" << padding << text << padding << "\033[0m" << std::endl;
     std::cout << std::setfill('=') << std::setw(width*2+2) << "" << std::endl;
-    // std::cout << (width - text.length());
 }
 
 void Game::renderGame() const {

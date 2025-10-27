@@ -17,7 +17,7 @@ const std::string white = "\e[0;37m";
 const std::string titleStyle = "\e[4;32m";
 const std::string resetStyle = "\e[0m";
 
-std::map<int, std::string> difficultiesMap = {
+inline std::map<int, std::string> difficultiesMap = {
     {0, "Noob"},
     {1, "Easy"},
     {2, "Normal"},
@@ -25,6 +25,9 @@ std::map<int, std::string> difficultiesMap = {
     {4, "Veryl hard"},
     {5, "God mode"},
 };
+
+inline void turnOnCbreak() {system("stty cbreak -echo");}
+inline void turnOffCbreak() {system("stty -cbreak echo");}
 
 
 #endif //SNEJKS_CONSTANTS_H

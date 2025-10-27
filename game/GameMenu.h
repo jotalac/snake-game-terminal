@@ -4,6 +4,8 @@
 
 #ifndef SNEJKS_GAMEMENU_H
 #define SNEJKS_GAMEMENU_H
+#include <map>
+
 #include "Game.h"
 
 
@@ -16,15 +18,17 @@ private:
     bool gameWalls = true;
 
 public:
-    GameMenu();
     // void startNewGame();
 
     bool showMenu();
     void showSettings();
+    void showControls();
     void gameLoop();
     void startGame() const;
 
     void changeGameSize(int &side, const std::string &sideName);
+
+    void addResult(int score, int difficulty, int width, int height);
 
     //getters and setters
     int game_width() const {
