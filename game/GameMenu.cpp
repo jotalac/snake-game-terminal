@@ -35,7 +35,7 @@ void GameMenu::startGame() const {
 
 bool GameMenu::showMenu() {
     FilePrinter::clearField();
-    FilePrinter::printFile("../resources/menu_title.txt", true);
+    FilePrinter::printFile("res/menu_title.txt", true);
     const auto startSpace = std::string(20, ' ');
     std::cout << startSpace << titleStyle << "Select action" << std::endl << std::endl;
     std::cout << white << startSpace << "1) start game" << std::endl;
@@ -71,7 +71,7 @@ bool GameMenu::showMenu() {
 void GameMenu::showSettings() {
     while (true) {
         FilePrinter::clearField();
-        FilePrinter::printFile("../resources/settings_title.txt");
+        FilePrinter::printFile("res/settings_title.txt");
 
         const auto startSpace = std::string(4, ' ');
         std::cout << std::boolalpha;
@@ -102,7 +102,7 @@ void GameMenu::showSettings() {
 void GameMenu::showControls() {
     while (true) {
         FilePrinter::clearField();
-        FilePrinter::printFile("../resources/controls_table.txt");
+        FilePrinter::printFile("res/controls_table.txt");
         std::cout << "    Press any key to exit..." << std::endl;
         getchar();
         break;
@@ -114,7 +114,7 @@ void GameMenu::changeGameSize(int &side, const std::string &sideName) {
     turnOffCbreak(); // disable raw mode (user can see input)
     while (true) {
         FilePrinter::clearField();
-        FilePrinter::printFile("../resources/settings_title.txt");
+        FilePrinter::printFile("res/settings_title.txt");
         std::cout << "Enter " << sideName << ": ";
 
         std::string action;

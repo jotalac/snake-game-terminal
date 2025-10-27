@@ -20,3 +20,5 @@ add_executable(snejks main.cpp
         game/GameMenu.cpp
         utils/constants.h
 )
+
+file(COPY res/ DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/res)

@@ -232,7 +232,7 @@ void Game::inputHandle(char const intputChar) {
 
 void Game::endScreen() const {
     FilePrinter::clearField();
-    FilePrinter::printFile("../resources/game_over.txt", true);
+    FilePrinter::printFile("res/game_over.txt", true);
 
     //print the numbers of score
     std::string scoreText = std::string("=======") + " Your score: " + std::to_string(score) + " =======";

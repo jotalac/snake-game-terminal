@@ -1,0 +1,5 @@
+Usage: ./snejks [-h | --help] [--play, -p]
+
+Options:
+  --help, -h    Show help message.
+  --play, -p    Launch the game without menu, with default settings.
