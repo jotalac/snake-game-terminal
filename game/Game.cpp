@@ -37,14 +37,14 @@ void Game::startGame() {
 
 void Game::stopGame() {
     gameRunning = false;
-
     cvar.notify_all();
 
-    if (inputThread.joinable()) inputThread.join();
-    if (computeThread.joinable()) computeThread.join();
-    if (renderThread.joinable()) renderThread.join();
+    bool game_was_started = false;
+    if (inputThread.joinable()) {game_was_started = true; inputThread.join();}
+    if (computeThread.joinable()) {game_was_started = true; computeThread.join();}
+    if (renderThread.joinable()) {game_was_started = true; renderThread.join();}
 
-    endScreen();
+    if (game_was_started) endScreen();
 }
 
 void Game::inputLoop() {
@@ -89,6 +89,11 @@ bool Game::isGameRunning() const {
 int Game::getScore() const {
     return score;
 }
+
+void Game::setScore(int score) {
+    this->score = score;
+}
+
 
 std::chrono::milliseconds Game::calculateGameSpeed() const {
     int minDelay = 20;

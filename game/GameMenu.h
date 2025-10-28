@@ -52,7 +52,7 @@ public:
     }
 
     void set_game_difficulty(int game_difficulty) {
-        gameDifficulty = game_difficulty;
+        gameDifficulty = game_difficulty % 6;
     }
 
     bool game_walls() const {

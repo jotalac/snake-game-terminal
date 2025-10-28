@@ -43,6 +43,7 @@ public:
     ~Game();
     bool isGameRunning() const;
     int getScore() const;
+    void setScore(int score);
 
     std::chrono::milliseconds calculateGameSpeed() const;
     int calculateWallNumber(bool showWalls) const;
