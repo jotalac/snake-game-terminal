@@ -66,6 +66,7 @@ void Game::computeLoop() {
     while (gameRunning) {
         {
             std::unique_lock<std::mutex> lock(mutex);
+            checkCollisions();
             updateSnake();
         }
         cvar.notify_one();
@@ -151,8 +152,7 @@ int Game::calculateWallNumber(const bool showWalls) const  {
     return std::min(wallCount, area / 5);
 }
 
-
-void Game::updateSnake() {
+void Game::checkCollisions() {
     const int headX = snake.getHeadX();
     const int headY = snake.getHeadY();
     std::vector<std::pair<int, int>> tail = snake.getTailCoords();
@@ -181,13 +181,14 @@ void Game::updateSnake() {
     //check collision with wall obsticle
     if ((std::ranges::find(wallPositions, std::make_pair(headX, headY)) != wallPositions.end())) {
         setGameEnd();
-        return;
     }
+}
 
+
+void Game::updateSnake() {
     //update snake positions
     snake.updateTail();
     snake.updateHead();
-    // itemCollect.moveRand(width, height); //move collect item to some random posiston
 }
 
 void Game::setGameEnd() {

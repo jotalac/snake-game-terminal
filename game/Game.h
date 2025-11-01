@@ -57,6 +57,7 @@ private:
     void printScore() const;
     void renderGame() const;
     void updateSnake();
+    void checkCollisions();
     void setGameEnd();
 
     // void controlSnake();

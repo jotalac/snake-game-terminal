@@ -28,8 +28,6 @@ public:
 
     void changeGameSize(int &side, const std::string &sideName);
 
-    void addResult(int score, int difficulty, int width, int height);
-
     //getters and setters
     int game_width() const {
         return gameWidth;
