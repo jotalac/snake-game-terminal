@@ -5,7 +5,6 @@
 
 
 #include "catch.hpp"
-#include <cstdint>
 
 #include "../entities/Snake.h"
 #include "game/Game.h"

@@ -7,7 +7,7 @@
 
 #include <condition_variable>
 #include <mutex>
-#include <bits/chrono.h>
+#include <chrono>
 
 #include "../entities/CollectItem.h"
 #include "../entities/Snake.h"
