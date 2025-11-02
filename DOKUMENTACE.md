@@ -2,7 +2,7 @@
 
 **Autor:** Josef Talač
 
-**Hash commitu:** 49e67a90e82927c2cf2d8a219edb9db236650d43 
+**Hash commitu:** d9fde689ed53cc9aa25d92f007b5339275d7d736
 
 ## 1. Popis herní logiky
 
