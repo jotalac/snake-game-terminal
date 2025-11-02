@@ -1,7 +1,8 @@
 # Dokumentace k semestrální práci - Hra housenka
 
 **Autor:** Josef Talač
-**Verze:** == pridat hash commitu == 
+
+**Hash commitu:** 49e67a90e82927c2cf2d8a219edb9db236650d43 
 
 ## 1. Popis herní logiky
 
