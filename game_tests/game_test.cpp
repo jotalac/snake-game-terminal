@@ -133,7 +133,6 @@ TEST_CASE("Game speed calculation", "[game]") {
     }
 }
 
-// Test cases for GameMenu class
 TEST_CASE("GameMenu settings management", "[menu]") {
     GameMenu menu;
 

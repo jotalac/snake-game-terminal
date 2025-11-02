@@ -12,10 +12,6 @@ Walls::Walls(const int numberOfWalls, const std::string &sign): sign(sign) {
     }
 }
 
-//
-// void Walls::placeSingleWall(int gameWidth, int gameHeight, int snakeX, int snakeY) {
-// }
-
 
 void Walls::placeWalls(const int gameWidth, const int gameHeight, const int snakeX, const int snakeY) {
     for (Item& item : wallItems) {

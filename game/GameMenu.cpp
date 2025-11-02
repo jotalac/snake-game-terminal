@@ -45,11 +45,6 @@ bool GameMenu::showMenu() {
 
     while (true) {
         const char action = getchar();
-
-        // std::string action;
-        // std::cin >> action;
-        // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Clear buffer
-
         if (action == '1') {
             startGame();
             return true;

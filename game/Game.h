@@ -33,8 +33,6 @@ private:
     std::thread renderThread;
     std::mutex mutex;
     std::condition_variable cvar;
-
-    // std::chrono::milliseconds delayMili = 110;
 public:
     Game(const Snake& player, bool showWalls = true, int width = 25, int height = 25, int difficulty = 4);
 
@@ -60,7 +58,6 @@ private:
     void checkCollisions();
     void setGameEnd();
 
-    // void controlSnake();
     void endScreen() const;
     void inputHandle(char intputChar);
 

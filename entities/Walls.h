@@ -17,7 +17,6 @@ private:
 public:
     Walls(int numberOfWalls, const std::string& sign);
     void placeWalls(int gameWidth, int gameHeight, int snakeX, int snakeY);
-    // void placeSingleWall(int gameWidth, int gameHeight, int snakeX, int snakeY);
 
     std::string getSign() const;
 

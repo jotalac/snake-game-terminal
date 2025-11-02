@@ -33,8 +33,6 @@ std::string Item::getSign() const {
 
 
 void Item::respawnItem(const int gameWidth, const int gameHeight) {
-    // srand(std::time(0));
-
     x = rand() % (gameWidth);
     y = rand() % (gameHeight);
 }

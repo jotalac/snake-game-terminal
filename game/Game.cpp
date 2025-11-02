@@ -134,7 +134,7 @@ std::chrono::milliseconds Game::calculateGameSpeed() const {
 int Game::calculateWallNumber(const bool showWalls) const  {
     if (!showWalls) return 0;
 
-    // Calculate based on area, but with a reasonable cap
+    // calculate based on area, but with a reasonable cap
     const int area = width * height;
     int wallCount;
 
@@ -148,7 +148,7 @@ int Game::calculateWallNumber(const bool showWalls) const  {
         default: wallCount = 10; break;
     }
 
-    // Cap at reasonable max (don't fill more than 20% of field)
+    // cap max (don't fill more than 20% of field)
     return std::min(wallCount, area / 5);
 }
 
@@ -247,7 +247,6 @@ void Game::endScreen() const {
 
     // Wait longer and require user input
     std::cout << "\nPress Enter to continue..." << std::endl;
-    // std::cin.get();
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
 }
@@ -280,15 +279,12 @@ void Game::printField() const {
             }
 
             //print the background
-            // else std::cout << "\033[0m░░";
             else std::cout << "\033[0m  ";
         }
-        // std::cout << std::setfill(' ') << std::setw(width) << "";
         std::cout << "║" << std::endl;
     }
     //print the final line
     std::cout << std::setfill('=') << std::setw(width*2 + 2) << "" << std::endl;
-    // printScore();
 
 }
 

@@ -159,8 +159,3 @@ Sada testů (`game_tests/game_test.cpp`) pokrývá klíčové části logiky:
     - hru není možné vyhrát, cílem je přežit co nejdéle a sesbírat co nejvíce předmětů 
 *   **Prohra**:
     - hráč prohraje pokud narazí do okrajů mapy, do svého ocasu nebo do zdí na mapě
-
-
-### Obrázky hry
-![alt menu_image](image.png)
-![alt text](image-2.png)
