@@ -1,7 +1,5 @@
 # Snake Game
 
-**Author:** Josef Talac
-
 ## Compilation and Execution
 
 ### Requirements
@@ -25,6 +23,13 @@
     ```bash
     cmake --build .
     ```
+
+
+<img width="500" height="350" alt="image" src="https://github.com/user-attachments/assets/5cfb7d1b-14d0-483f-b4be-d7fd8f1af5cc" /> 
+<img width="500" height="600" alt="image" src="https://github.com/user-attachments/assets/0af2ec3e-2205-41bc-85f3-095e8e91f967" />
+
+
+*Game might not work correctly in windows terminals*
 
 ### Running the Game
 After successful compilation, an executable file `snejks` will be created in the `build` folder.
